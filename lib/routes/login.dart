@@ -1,11 +1,23 @@
+
 import 'package:UniPath/utils/color.dart';
 import 'package:flutter/material.dart';
+
+import 'HomePage.dart';
 
 
 class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+       
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      return Colors.black;
+    }
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -87,8 +99,12 @@ class Login extends StatelessWidget {
                 margin: EdgeInsets.fromLTRB(0,10,0,0),
                 child: ElevatedButton(
                   child: Text("Login", style: TextStyle(fontSize: 20.0),),
-                  color: Colors.red,
-                  onPressed: () {},
+                  style: ButtonStyle(overlayColor: MaterialStateProperty.resolveWith(getColor),),
+                  onPressed: () {Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+
+                      return HomeScreen();
+                    }));
+                    },
                   ),
               ),
             ],
@@ -98,3 +114,5 @@ class Login extends StatelessWidget {
     );
   }
 }
+
+
