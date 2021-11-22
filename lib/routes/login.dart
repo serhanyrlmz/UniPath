@@ -1,17 +1,20 @@
-
 import 'package:UniPath/utils/color.dart';
 import 'package:flutter/material.dart';
 
-import 'HomePage.dart';
 
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
 
-class Login extends StatelessWidget {
+class _LoginState extends State<Login> {
+
 
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
-       
+
         MaterialState.pressed,
         MaterialState.hovered,
         MaterialState.focused,
@@ -99,13 +102,19 @@ class Login extends StatelessWidget {
                 margin: EdgeInsets.fromLTRB(0,10,0,0),
                 child: ElevatedButton(
                   child: Text("Login", style: TextStyle(fontSize: 20.0),),
-                  style: ButtonStyle(overlayColor: MaterialStateProperty.resolveWith(getColor),),
-                  onPressed: () {Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
-
-                      return HomeScreen();
-                    }));
-                    },
-                  ),
+                  //color: Colors.red,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/HomePage');},
+                ),
+              ),
+              Spacer(),
+              TextButton(
+                child: Text("Don't have an account? Sign Up!", style: TextStyle(fontSize:20.0),),
+                style: ButtonStyle(overlayColor:
+                MaterialStateProperty.resolveWith(getColor),),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/signup");
+                },
               ),
             ],
           ),
@@ -114,5 +123,3 @@ class Login extends StatelessWidget {
     );
   }
 }
-
-

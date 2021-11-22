@@ -34,10 +34,19 @@ class _SignUpState extends State<SignUp> {
         child: Center(
           child: Column(
             children:[
+              SizedBox(height:55),
 
-              //put the adding photo here.
+              IconButton(
+                icon: Icon(Icons.add_a_photo_rounded),
+                iconSize:100,
+                color:Colors.white,
+                onPressed:(){
+                  //add the choosing photo function here.
+                }
+              ),
 
-              SizedBox(height:160),
+              SizedBox(height:25),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(22,10,22,10),
                 child:
@@ -61,7 +70,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
 
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(22,10,22,10),
                 child:
@@ -84,6 +92,7 @@ class _SignUpState extends State<SignUp> {
                   autocorrect: false,
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(22,10,22,10),
                 child:
@@ -106,6 +115,7 @@ class _SignUpState extends State<SignUp> {
                   autocorrect: false,
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(22,10,22,10),
                 child:
@@ -128,15 +138,18 @@ class _SignUpState extends State<SignUp> {
                   autocorrect: false,
                 ),
               ),
+
               ElevatedButton(
-                child: Text("Register", style: TextStyle(fontSize:20.0),),
+                child: Text("Sign Up", style: TextStyle(fontSize:20.0),),
                 style: ButtonStyle(overlayColor:
                   MaterialStateProperty.resolveWith(getColor),),
                 onPressed: () {
                   Navigator.pushNamed(context, "/login");
                   },
               ),
+
               Spacer(),
+
               TextButton(
                 child: Text("Already have an account? Login!", style: TextStyle(fontSize:20.0),),
                 style: ButtonStyle(overlayColor:
