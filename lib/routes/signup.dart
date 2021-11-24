@@ -34,21 +34,21 @@ class _SignUpState extends State<SignUp> {
         child: Center(
           child: Column(
             children:[
-              SizedBox(height:55),
+              Spacer(flex:5),
 
               IconButton(
                 icon: Icon(Icons.add_a_photo_rounded),
-                iconSize:100,
+                iconSize:125,
                 color:Colors.white,
                 onPressed:(){
                   //add the choosing photo function here.
                 }
               ),
 
-              SizedBox(height:25),
+              Spacer(flex:3),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(22,10,22,10),
+                padding: const EdgeInsets.fromLTRB(22,0,22,10),
                 child:
                 TextFormField(
                   decoration: const InputDecoration(
@@ -117,7 +117,7 @@ class _SignUpState extends State<SignUp> {
               ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(22,10,22,10),
+                padding: const EdgeInsets.fromLTRB(22,10,22,12),
                 child:
                 TextFormField(
                   decoration: const InputDecoration(
@@ -148,7 +148,7 @@ class _SignUpState extends State<SignUp> {
                   },
               ),
 
-              Spacer(),
+              Spacer(flex:10),
 
               TextButton(
                 child: Text("Already have an account? Login!", style: TextStyle(fontSize:20.0),),

@@ -9,90 +9,75 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      return Colors.black;
+    }
     return Scaffold(
-      body: SafeArea(
-        maintainBottomViewPadding: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Padding(
-                padding: Dimen.regularPadding,
-                child: RichText(
-                  text: TextSpan(
-                    text: "Welcome to ",
-                    style: kHeadingTextStyle,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: "CS310App",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.red,
-                          decorationThickness: 2.0,
-                          decorationStyle: TextDecorationStyle.dashed,
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end :Alignment.bottomCenter,
+              colors: [AppColors.loginBackTop, AppColors.loginBackBottom]
+            ),
+          ),
+          child: Center(
+            child:Column(
+              children:[
+                Spacer(flex:110),
+
+                Text(
+                    "Welcome to the UniPath",
+                  textAlign: TextAlign.center,
+                  style: WelcomeText,
                 ),
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Image.network('https://images-na.ssl-images-amazon.com/images/I/417MahKs6fL.png'),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          'Signup',
-                          style: kButtonLightTextStyle,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        //backgroundColor: AppColors.secondary,
-                      ),
-                    ),
-                  ),
 
-                  SizedBox(width: 8.0,),
+                Spacer(flex:85),
 
-                  Expanded(
-                    flex: 1,
-                    child: OutlinedButton(
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child:Image.asset('assets/logo.jpeg',
+                    width: MediaQuery.of(context).size.width/1.3,),
+                ),
+
+                Spacer(flex:90),
+
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children:[
+                    ElevatedButton(
+                      child: Text("Sign Up", style: TextStyle(fontSize:25.0),),
+                      style: ButtonStyle(overlayColor:
+                      MaterialStateProperty.resolveWith(getColor),),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, "/signup");
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          'Login',
-                          style: kButtonDarkTextStyle,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        //backgroundColor: AppColors.primary,
-                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                    SizedBox(width:35),
+                    ElevatedButton(
+                      child: Text("Login", style: TextStyle(fontSize:25.0),),
+                      style: ButtonStyle(overlayColor:
+                      MaterialStateProperty.resolveWith(getColor),),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/login");
+                      },
+                    ),
+                  ]
+                ),
+                Spacer(flex:100),
+              ]
+            )
+          )
       ),
     );
   }

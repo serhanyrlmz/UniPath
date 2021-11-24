@@ -34,21 +34,23 @@ class _LoginState extends State<Login> {
         child: Center(
           child:Column(
             children:[
-              SizedBox(height:40),
-              Row(
+                Spacer(flex:9),
+                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:[
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0,8,0,24),
-                    child:Image.asset('assets/logo.png',
-                      width: MediaQuery.of(context).size.width/4.5,),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child:Image.asset('assets/logo.jpeg',
+                      width: MediaQuery.of(context).size.width/2.5,),
                   ),
                 ],
               ),
 
+              Spacer(flex:5),
+
               Padding(
-                padding: const EdgeInsets.fromLTRB(22,10,22,10),
+                padding: const EdgeInsets.fromLTRB(22,0,22,10),
                 child:
                 TextFormField(
                   decoration: const InputDecoration(
@@ -107,7 +109,7 @@ class _LoginState extends State<Login> {
                     Navigator.pushNamed(context, '/HomePage');},
                 ),
               ),
-              Spacer(),
+              Spacer(flex:10),
               TextButton(
                 child: Text("Don't have an account? Sign Up!", style: TextStyle(fontSize:20.0),),
                 style: ButtonStyle(overlayColor:

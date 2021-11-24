@@ -25,4 +25,14 @@ final kAppBarTitleTextStyle = TextStyle(
   fontSize: 24.0,
   fontWeight: FontWeight.w600,
   letterSpacing: -0.7,
+
+);
+
+//welcome
+final WelcomeText = TextStyle(
+  color:Colors.white,
+  fontSize:29.0,
+  fontWeight: FontWeight.bold,
+  letterSpacing: -0.7,
+
 );
