@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:flutter/services.dart';
 
+
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
@@ -42,7 +43,7 @@ class _SignUpState extends State<SignUp> {
                 color:Colors.white,
                 onPressed:(){
                   //add the choosing photo function here.
-                }
+                },
               ),
 
               Spacer(flex:3),
@@ -165,6 +166,4 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
-
-
 
