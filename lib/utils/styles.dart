@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 
-//welcome
+
 final WelcomeText = TextStyle(
   color:Colors.white,
   fontSize:29.0,

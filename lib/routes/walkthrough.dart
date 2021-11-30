@@ -17,34 +17,32 @@ class _WalkThroughState extends State<WalkThrough> {
 
   //PART 1 START
 
-  int currentPage = 0;  //1 POINT
-  int lastPage = 3;     //1 POINT
+  int currentPage = 0;
+  int lastPage = 2;
   int counter=0;
 
-  List<String> titles = [   //2 POINTS
-    'Welcome',
-    'Intro',
-    'Profiles',
-    'Content'
+  List<String> titles = [
+    'Welcome to UniPath App',
+    'Feed',
+    'Profiles'
   ];
-  List<String> headings = [ //2 POINTS
-    'Awesome IT535 app',
-    'Signup easily',
-    'Create your profile',
-    'Start meeting new people'
+  List<String> headings = [
+    'Meet and make friends',
+    'Instant access to all students opinions and activities',
+    'Create your profile'
+
   ];
-  List<String> captions = [   //2 POINTS
-    'Your personal course material',
-    'Just use your SU-Net account',
-    'Update your flutter knowledge',
-    'Connect with fellow flutterists'
+  List<String> captions = [
+    'Get access to all university student clubs and activities all around the world',
+    'Just provide us your student id',
+    'Update your opinion'
+
   ];
 
-  List<String> images = [   //2 POINTS
-    'https://adtechresources.com/wp-content/uploads/2020/02/Mobile-Application.jpeg',
-    'https://cdn.pttrns.com/764/8981_f.jpg',
-    'https://cdn.pttrns.com/614/7772_f.jpg',
-    'https://cdn.pttrns.com/614/7773_f.jpg',
+  List<String> images = [
+     'assets/logo.jpeg',
+    'assets/logo.jpeg',
+    'assets/logo.jpeg'
   ];
 
   void nextPage() {
@@ -54,7 +52,7 @@ class _WalkThroughState extends State<WalkThrough> {
       });
     }
     counter++;
-    if(counter==4){
+    if(counter==3){
       setState((){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
@@ -66,9 +64,9 @@ class _WalkThroughState extends State<WalkThrough> {
   }
 
   void prevPage() {
-    if(currentPage > 0) {       //1 POINT
-      setState(() {             //1 POINT
-        currentPage -= 1;       //1 POINT
+    if(currentPage > 0) {
+      setState(() {
+        currentPage -= 1;
       });
     }
     counter--;
@@ -81,32 +79,32 @@ class _WalkThroughState extends State<WalkThrough> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),   //1 POINT
-      appBar: AppBar(                             //1 POINT
-        backgroundColor: const Color(0xFFD1D1D6), //1 POINT
+      backgroundColor: const Color(0xFFF2F2F7),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFD1D1D6),
         title: Text(
-          titles[currentPage].toUpperCase(),      //1 POINT, uppercase is not required if the list is all uppercase
+          titles[currentPage].toUpperCase(),
           style: TextStyle(
-            color: const Color(0xFF757575),       //1 POINT
-            letterSpacing: -1,                    //1 POINT
+            color: const Color(0xFF757575),
+            letterSpacing: -1,
           ),
         ),
         centerTitle: true,      //1 POINT
       ),
       body: SafeArea(       //2 POINTS
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,  //1 POINT
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),  //1 POINT
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  headings[currentPage],      //1 POINT
+                  headings[currentPage],
                   style: TextStyle(
-                    fontSize: 32,             //1 POINT
-                    fontWeight: FontWeight.w800,  //1 POINT
-                    color: const Color(0xFF229A98), //1 POINT
-                    letterSpacing: -1.0,    //1 POINT
+                    fontSize: 32,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF229A98),
+                    letterSpacing: -1.0,
                   ),
                 ),
               ),
@@ -114,35 +112,35 @@ class _WalkThroughState extends State<WalkThrough> {
 
 
             Container(
-              height: 280,  //1 POINT
-              child: CircleAvatar(    //2 POINT
-                backgroundImage: NetworkImage(images[currentPage]), //1 POINT: networkimage, 1 POINT: list item
-                radius: 140,    //1 POINT
-                backgroundColor: const Color(0xFF229A98),   //1 POINT
+              height: 280,
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/logo.jpeg'),
+                radius: 140,
+                backgroundColor: const Color(0xFF229A98),
               ),
             ),
 
             Center(
               child: Text(
-                captions[currentPage],    //1 POINT
+                captions[currentPage],
                 style: TextStyle(
-                  fontSize: 24,   //1 POINT
-                  fontWeight: FontWeight.w300,  //1 POINT
-                  color: const Color(0xFF757575), //1 POINT
-                  letterSpacing: -1.0,    //1 POINT
+                  fontSize: 24,
+                  fontWeight: FontWeight.w300,
+                  color: const Color(0xFF757575),
+                  letterSpacing: -1.0,
                 ),
               ),
             ),
 
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),   //1 POINT
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 height: 80,
                 child: Row(
                   children: [
-                    OutlinedButton(   //1 POINT
-                      onPressed: prevPage,   //1 POINT
+                    OutlinedButton(
+                      onPressed: prevPage,
                       child: Text(
                         'Prev',
                         style: TextStyle(
@@ -156,7 +154,7 @@ class _WalkThroughState extends State<WalkThrough> {
 
 
                     Text(
-                      '${currentPage+1}/${lastPage+1}', //1 POINT
+                      '${currentPage+1}/${lastPage+1}',
                       style: TextStyle(
                         color: const Color(0xFF229A98),
                       ),
@@ -166,8 +164,8 @@ class _WalkThroughState extends State<WalkThrough> {
                     Spacer(),
 
 
-                    OutlinedButton(  //1 POINT
-                      onPressed: nextPage,  //1 POINT
+                    OutlinedButton(
+                      onPressed: nextPage,
                       child: Text(
                         'Next',
                         style: TextStyle(
