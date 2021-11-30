@@ -1,3 +1,4 @@
+import 'package:UniPath/routes/welcome.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class _WalkThroughState extends State<WalkThrough> {
 
   int currentPage = 0;  //1 POINT
   int lastPage = 3;     //1 POINT
+  int counter=0;
 
   List<String> titles = [   //2 POINTS
     'Welcome',
@@ -46,11 +48,21 @@ class _WalkThroughState extends State<WalkThrough> {
   ];
 
   void nextPage() {
-    if(currentPage < lastPage) {  //1 POINT
-      setState(() {               //1 POINT
-        currentPage += 1;         //1 POINT
+    if(currentPage < lastPage) {
+      setState(() {
+        currentPage += 1;
       });
     }
+    counter++;
+    if(counter==4){
+      setState((){
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+
+          return Welcome();
+        }));
+      });
+    }
+
   }
 
   void prevPage() {
@@ -59,6 +71,7 @@ class _WalkThroughState extends State<WalkThrough> {
         currentPage -= 1;       //1 POINT
       });
     }
+    counter--;
   }
 
   //PART 1 END
