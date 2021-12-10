@@ -45,8 +45,12 @@ class _WelcomeState extends State<Welcome> {
 
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child:Image.asset('assets/logo.jpeg',
-                    width: MediaQuery.of(context).size.width/1.3,),
+                  child: CircleAvatar(
+                    radius: 150,
+                    child: ClipOval(
+                      child:Image.asset('assets/logo.jpeg',
+                        width: MediaQuery.of(context).size.width/1.3,))
+                  )
                 ),
 
                 Spacer(flex:90),

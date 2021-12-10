@@ -41,8 +41,13 @@ class _LoginState extends State<Login> {
                 children:[
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child:Image.asset('assets/logo.jpeg',
-                      width: MediaQuery.of(context).size.width/2.5,),
+                    child: CircleAvatar(
+                      radius: 125,
+                      child: ClipOval(
+                        child:Image.asset('assets/logo.jpeg',
+                          width: MediaQuery.of(context).size.width)
+                      )
+                    )
                   ),
                 ],
               ),
