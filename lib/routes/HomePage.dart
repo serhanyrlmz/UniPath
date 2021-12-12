@@ -1,53 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
-import 'package:UniPath/routes/search.dart';
-import 'package:UniPath/routes/announcements.dart';
-import 'package:UniPath/routes/add.dart';
-import 'package:UniPath/routes/settings.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'search.dart';
+import 'announcements.dart';
+import 'add.dart';
+import 'settings.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.analytics, required this.observer})
-      : super(key: key);
-
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeViewState extends State<HomePage> {
-  String _message = "";
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex=0;
 
-  void setMessage(String msg) {
-    setState(() {
-      _message = msg;
-    });
-  }
+  void _onItemTapped(int index){
+    setState((){
+      _selectedIndex=index;
+      if(_selectedIndex==0) {
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-  Future<void> _setLogEvent() async {
-    await widget.analytics
-        .logEvent(name: 'CS310_Test', parameters: <String, dynamic>{
-      "string": "myString",
-      "int": 12,
-    });
-    setMessage("setLogEvent succeeded.");
-  }
+          return HomeScreen();
+        }));}
+      else if(_selectedIndex ==1){
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-  Future<void> _setCurrentScreen() async {
-    await widget.analytics.setCurrentScreen(
-      screenName: "Home View",
-      screenClassOverride: "HomeView",
+          return Search();
+        }));
+      }
+      else if(_selectedIndex ==2){
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+
+          return Announcements();
+        }));
+      }
+      else if(_selectedIndex ==3){
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+
+          return Add();
+        }));
+      }
+      else if(_selectedIndex ==4){
+        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+
+          return Settings();
+        }));
+      }
+
+    }
     );
-    setMessage("setCurrentScreen is succeeded.");
-  }
-
-  Future<void> _setUserId() async {
-    await widget.analytics.setUserId("cs310step4");
-    setMessage("setUserId is succeeded.");
   }
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,11 @@ class _HomeViewState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),label:'home', backgroundColor: AppColors.loginBackBottom),
 
         ],
+        type: BottomNavigationBarType.shifting,
+        currentIndex:_selectedIndex,
+        iconSize:40,
+        onTap:_onItemTapped,
+
       ),
 
     );

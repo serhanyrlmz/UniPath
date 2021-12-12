@@ -11,10 +11,6 @@ import 'package:firebase_analytics/observer.dart';
 
 
 class Settings extends StatefulWidget {
-  const Settings({Key? key, required this.analytics, required this.observer}) : super(key: key);
-
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -34,7 +30,7 @@ class _SettingsState extends State<Settings> {
       else if(_selectedIndex ==1){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return SearchScreen();
+          return Search();
         }));
       }
       else if(_selectedIndex ==2){

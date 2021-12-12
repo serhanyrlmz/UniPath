@@ -10,11 +10,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
 class Add extends StatefulWidget {
-  const Add({Key? key, required this.analytics, required this.observer}) : super(key: key);
-
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
-
   @override
   _AddState createState() => _AddState();
 }
@@ -33,7 +28,7 @@ class _AddState extends State<Add> {
       else if(_selectedIndex ==1){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return SearchScreen();
+          return Search();
         }));
       }
       else if(_selectedIndex ==2){

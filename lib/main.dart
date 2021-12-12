@@ -23,6 +23,8 @@ void main() {
 class MyApp extends StatelessWidget {
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
           }
 
           return MaterialApp(
-            home: UnknownWelcome(),
+            home: Welcome(analytics: analytics, observer: observer),
           );
         }
     );
@@ -56,22 +58,19 @@ class AppBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
-        value: AuthService().user,
-    initialData: null,
-    child: MaterialApp(
-    navigatorObservers: <NavigatorObserver>[observer],
-    home: HomePage(analytics: analytics, observer: observer),
-    routes: {
-        '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
-        '/welcome': (context) => Welcome(analytics: analytics, observer: observer),
-        '/login': (context) => Login(analytics: analytics, observer: observer),
-        '/signup': (context) => SignUp(analytics: analytics, observer: observer),
-        '/search' : (context) => Search(analytics: analytics, observer: observer),
-        '/settings' : (context) => Settings(analytics: analytics, observer: observer),
-        '/HomePage' : (context) => HomePage(analytics: analytics, observer: observer),
+    return MaterialApp(
+      navigatorObservers: <NavigatorObserver>[observer],
+      home: HomeScreen(),
+      routes: {
+          '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
+          '/welcome': (context) => Welcome(analytics: analytics, observer: observer),
+          '/login': (context) => Login(analytics: analytics, observer: observer),
+          '/signup': (context) => SignUp(analytics: analytics, observer: observer),
+          '/search' : (context) => Search(),
+          '/settings' : (context) => Settings(),
+          '/HomePage' : (context) => HomeScreen(),
 
-      },
-    ));
+        },
+    );
   }
 }

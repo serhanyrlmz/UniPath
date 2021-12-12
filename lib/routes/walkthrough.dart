@@ -16,7 +16,7 @@ class WalkThrough extends StatefulWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: WalkThrough(),
+    home: WalkThrough(analytics: analytics, observer: observer),
   ));
 }
 
@@ -63,7 +63,7 @@ class _WalkThroughState extends State<WalkThrough> {
       setState((){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Welcome();
+          return Welcome(analytics: analytics, observer: observer);
         }));
       });
     }

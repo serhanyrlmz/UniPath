@@ -14,15 +14,9 @@ class SignUp extends StatefulWidget {
   final FirebaseAnalyticsObserver observer;
   @override
   _SignUpState createState() => _SignUpState();
-  
-class SignUp extends StatefulWidget {
-  @override
-  _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-
-
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
