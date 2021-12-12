@@ -14,11 +14,11 @@ class WalkThrough extends StatefulWidget {
   _WalkThroughState createState() => _WalkThroughState();
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: WalkThrough(analytics: analytics, observer: observer),
-  ));
-}
+//void main() {
+//  runApp(MaterialApp(
+//    home: WalkThrough(analytics: analytics, observer: observer),
+//  ));
+//}
 
 class _WalkThroughState extends State<WalkThrough> {
 
@@ -61,10 +61,11 @@ class _WalkThroughState extends State<WalkThrough> {
     counter++;
     if(counter==3){
       setState((){
-        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
+        Navigator.popAndPushNamed(context, "/Welcome");
+        //Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Welcome(analytics: analytics, observer: observer);
-        }));
+          //return Welcome(analytics: analytics, observer: observer);
+        //}));
       });
     }
 
