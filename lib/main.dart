@@ -72,6 +72,6 @@ class AppBase extends StatelessWidget {
         '/HomePage' : (context) => HomePage(analytics: analytics, observer: observer),
 
       },
-    );
+    ));
   }
 }
