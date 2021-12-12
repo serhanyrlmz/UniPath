@@ -1,28 +1,29 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Database {
-
-  final String uid;
-  Database({required this.uid});
-
+class DBService {
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-  Future<void> createUserData(String username, String phoneNumber) async {
-    await userCollection.doc(uid).set({
+  Future addUserAutoID(String name, String surname, String mail, String token) async {
+    userCollection.add({
+      'name': name,
+      'surname': surname,
+      'userToken': token,
+      'email': mail
+    })
+        .then((value) => print('User added'))
+        .catchError((error) => print('Error: ${error.toString()}'));
+  }
+
+  Future addUser(String name, String surname, String mail, String token,
+      String username, String password) async {
+    userCollection.doc(token).set({
+      'name': name,
+      'surname': surname,
+      'userToken': token,
       'username': username,
-      'phoneNumber': phoneNumber,
-      'postCount': 0,
-      'followersCount': 0,
-      'followingCount': 0,
-      'bio': '',
-      'usersPosts': [],
-      'userFollowers': [],
-      'userFollowing': [],
-      'usersChats': [],
-      'isPrivate': false,
-      'isDeactivated': false,
-      'profilePhoto': '',
-      'profilePhotoUrl': '',
+      'email': mail,
+      'password': password,
     });
   }
 }
