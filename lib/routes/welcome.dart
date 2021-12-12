@@ -2,8 +2,16 @@ import 'package:UniPath/utils/dimension.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:UniPath/utils/styles.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:UniPath/utils/analytics.dart';
 
 class Welcome extends StatefulWidget {
+  const Welcome({Key? key, required this.analytics, required this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
   @override
   _WelcomeState createState() => _WelcomeState();
 }
@@ -45,12 +53,8 @@ class _WelcomeState extends State<Welcome> {
 
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: CircleAvatar(
-                    radius: 150,
-                    child: ClipOval(
-                      child:Image.asset('assets/logo.jpeg',
-                        width: MediaQuery.of(context).size.width/1.3,))
-                  )
+                  child:Image.asset('assets/logo.jpeg',
+                    width: MediaQuery.of(context).size.width/1.3,),
                 ),
 
                 Spacer(flex:90),
