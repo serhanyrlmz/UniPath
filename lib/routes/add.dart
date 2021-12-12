@@ -5,8 +5,15 @@ import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'announcements.dart';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
 class Add extends StatefulWidget {
-  const Add({Key? key}) : super(key: key);
+  const Add({Key? key, required this.analytics, required this.observer}) : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
   @override
   _AddState createState() => _AddState();
