@@ -96,9 +96,9 @@ class _WalkThroughState extends State<WalkThrough> {
             letterSpacing: -1,
           ),
         ),
-        centerTitle: true,      //1 POINT
+        centerTitle: true,
       ),
-      body: SafeArea(       //2 POINTS
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
