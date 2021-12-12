@@ -5,8 +5,17 @@ import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'announcements.dart';
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
+
+class Search extends StatefulWidget {
+  const Search({Key? key, required this.analytics, required this.observer})
+      : super(key: key);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
