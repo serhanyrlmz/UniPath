@@ -2,8 +2,19 @@ import 'package:UniPath/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:UniPath/utils/analytics.dart';
 
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key, required this.analytics, required this.observer})
+      : super(key: key);
 
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+  @override
+  _SignUpState createState() => _SignUpState();
+  
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
