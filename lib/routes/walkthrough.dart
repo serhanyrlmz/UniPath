@@ -1,184 +1,91 @@
-import 'package:UniPath/routes/welcome.dart';
+import 'package:UniPath/utils/dimension.dart';
 import 'package:flutter/material.dart';
+import 'package:UniPath/utils/color.dart';
+import 'package:UniPath/utils/styles.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:UniPath/utils/analytics.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: WalkThrough(),
-  ));
-}
+class Welcome extends StatefulWidget {
+  const Welcome({Key? key, required this.analytics, required this.observer}) : super(key: key);
 
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
-class WalkThrough extends StatefulWidget {
   @override
-  _WalkThroughState createState() => _WalkThroughState();
+  _WelcomeState createState() => _WelcomeState();
 }
 
-class _WalkThroughState extends State<WalkThrough> {
-
-  //PART 1 START
-
-  int currentPage = 0;
-  int lastPage = 2;
-  int counter=0;
-
-  List<String> titles = [
-    'Welcome to UniPath App',
-    'Feed',
-    'Profiles'
-  ];
-  List<String> headings = [
-    'Meet and make friends',
-    'Instant access to all students opinions and activities',
-    'Create your profile'
-
-  ];
-  List<String> captions = [
-    'Get access to all university student clubs and activities all around the world',
-    'Just provide us your student id',
-    'Update your opinion'
-
-  ];
-
-  List<String> images = [
-     'assets/logo.jpeg',
-    'assets/logo.jpeg',
-    'assets/logo.jpeg'
-  ];
-
-  void nextPage() {
-    if(currentPage < lastPage) {
-      setState(() {
-        currentPage += 1;
-      });
-    }
-    counter++;
-    if(counter==3){
-      setState((){
-        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
-
-          return Welcome();
-        }));
-      });
-    }
-
-  }
-
-  void prevPage() {
-    if(currentPage > 0) {
-      setState(() {
-        currentPage -= 1;
-      });
-    }
-    counter--;
-  }
-
-  //PART 1 END
-
-  //PART 2 START
+class _WelcomeState extends State<Welcome> {
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      return Colors.black;
+    }
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFD1D1D6),
-        title: Text(
-          titles[currentPage].toUpperCase(),
-          style: TextStyle(
-            color: const Color(0xFF757575),
-            letterSpacing: -1,
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end :Alignment.bottomCenter,
+              colors: [AppColors.loginBackTop, AppColors.loginBackBottom]
+            ),
           ),
-        ),
-        centerTitle: true,      //1 POINT
-      ),
-      body: SafeArea(       //2 POINTS
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                  headings[currentPage],
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFF229A98),
-                    letterSpacing: -1.0,
-                  ),
+          child: Center(
+            child:Column(
+              children:[
+                Spacer(flex:110),
+
+                Text(
+                    "Welcome to the UniPath",
+                  textAlign: TextAlign.center,
+                  style: WelcomeText,
                 ),
-              ),
-            ),
 
+                Spacer(flex:85),
 
-            Container(
-              height: 280,
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/logo.jpeg'),
-                radius: 140,
-                backgroundColor: const Color(0xFF229A98),
-              ),
-            ),
-
-            Center(
-              child: Text(
-                captions[currentPage],
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w300,
-                  color: const Color(0xFF757575),
-                  letterSpacing: -1.0,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child:Image.asset('assets/logo.jpeg',
+                    width: MediaQuery.of(context).size.width/1.3,),
                 ),
-              ),
-            ),
 
+                Spacer(flex:90),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 80,
-                child: Row(
-                  children: [
-                    OutlinedButton(
-                      onPressed: prevPage,
-                      child: Text(
-                        'Prev',
-                        style: TextStyle(
-                          color: const Color(0xFF229A98),
-                        ),
-                      ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children:[
+                    ElevatedButton(
+                      child: Text("Sign Up", style: TextStyle(fontSize:25.0),),
+                      style: ButtonStyle(overlayColor:
+                      MaterialStateProperty.resolveWith(getColor),),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/signup");
+                      },
                     ),
-
-
-                    Spacer(),
-
-
-                    Text(
-                      '${currentPage+1}/${lastPage+1}',
-                      style: TextStyle(
-                        color: const Color(0xFF229A98),
-                      ),
+                    SizedBox(width:35),
+                    ElevatedButton(
+                      child: Text("Login", style: TextStyle(fontSize:25.0),),
+                      style: ButtonStyle(overlayColor:
+                      MaterialStateProperty.resolveWith(getColor),),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/login");
+                      },
                     ),
-
-
-                    Spacer(),
-
-
-                    OutlinedButton(
-                      onPressed: nextPage,
-                      child: Text(
-                        'Next',
-                        style: TextStyle(
-                          color: const Color(0xFF229A98),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ]
                 ),
-              ),
-            ),
-          ],
-        ),
+                Spacer(flex:100),
+              ]
+            )
+          )
       ),
     );
   }
