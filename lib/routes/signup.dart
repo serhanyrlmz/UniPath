@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:UniPath/utils/analytics.dart';
+import 'package:UniPath/utils/auth.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key, required this.analytics, required this.observer})
@@ -17,6 +19,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {

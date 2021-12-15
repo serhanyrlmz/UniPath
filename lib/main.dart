@@ -14,8 +14,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   runApp(MyApp());
 }
@@ -60,10 +61,10 @@ class AppBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorObservers: <NavigatorObserver>[observer],
-      home: HomeScreen(),
+      home: WalkThrough(analytics: analytics, observer: observer),
       routes: {
-          '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
           '/welcome': (context) => Welcome(analytics: analytics, observer: observer),
+          '/walkthrough': (context) => WalkThrough(analytics: analytics, observer: observer),
           '/login': (context) => Login(analytics: analytics, observer: observer),
           '/signup': (context) => SignUp(analytics: analytics, observer: observer),
           '/search' : (context) => Search(),

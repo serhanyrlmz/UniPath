@@ -52,6 +52,8 @@ class _WalkThroughState extends State<WalkThrough> {
     'assets/logo.jpeg'
   ];
 
+
+
   void nextPage() {
     if(currentPage < lastPage) {
       setState(() {
@@ -61,7 +63,7 @@ class _WalkThroughState extends State<WalkThrough> {
     counter++;
     if(counter==3){
       setState((){
-        Navigator.popAndPushNamed(context, "/Welcome");
+        Navigator.popAndPushNamed(context, "/welcome");
         //Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
           //return Welcome(analytics: analytics, observer: observer);
