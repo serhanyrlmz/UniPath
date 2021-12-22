@@ -82,7 +82,7 @@ class AuthService {
   }
 
   Future signupWithMailAndPass(String mail, String pass, String name,
-      String surname, String username) async {
+       String username) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: mail, password: pass);
@@ -91,7 +91,7 @@ class AuthService {
       // Add user to database before returning to profile
       DBService dbService = DBService();
       String userToken = await user.uid;
-      dbService.addUser(name, surname, mail, userToken, username, pass);
+      dbService.addUser(name,mail, userToken, username, pass);
 
       return _userFromFirebase(user);
     } on FirebaseAuthException catch (e) {

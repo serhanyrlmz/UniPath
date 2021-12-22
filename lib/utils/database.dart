@@ -7,7 +7,6 @@ class DBService {
   Future addUserAutoID(String name, String surname, String mail, String token) async {
     userCollection.add({
       'name': name,
-      'surname': surname,
       'userToken': token,
       'email': mail
     })
@@ -15,11 +14,10 @@ class DBService {
         .catchError((error) => print('Error: ${error.toString()}'));
   }
 
-  Future addUser(String name, String surname, String mail, String token,
+  Future addUser(String name, String mail, String token,
       String username, String password) async {
     userCollection.doc(token).set({
       'name': name,
-      'surname': surname,
       'userToken': token,
       'username': username,
       'email': mail,

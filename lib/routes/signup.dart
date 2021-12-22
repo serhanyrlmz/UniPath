@@ -1,4 +1,5 @@
 import 'package:UniPath/utils/styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,9 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  late String email, username, pass,name;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +67,7 @@ class _SignUpState extends State<SignUp> {
                   decoration: const InputDecoration(
                     fillColor: AppColors.TextFormBg,
                     filled: true,
+
                     hintText: 'Email',
                     prefixIcon: Icon(Icons.email_outlined),
                     border: OutlineInputBorder(
@@ -72,7 +77,10 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.all(Radius.circular(320)),
                     ),
                   ),
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (String value) {
+                    email = value;
+                  },
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -96,6 +104,9 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   keyboardType: TextInputType.text,
+                  onChanged: (String value) {
+                    username = value;
+                  },
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -119,6 +130,9 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   keyboardType: TextInputType.text,
+                  onChanged: (String value) {
+                    name = value;
+                  },
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -142,6 +156,9 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   keyboardType: TextInputType.text,
+                  onChanged: (String value) {
+                    pass = value;
+                  },
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -152,8 +169,16 @@ class _SignUpState extends State<SignUp> {
                 child: Text("Sign Up", style: TextStyle(fontSize:20.0),),
                 style: ButtonStyle(overlayColor:
                   MaterialStateProperty.resolveWith(getColor),),
-                onPressed: () {
-                  Navigator.pushNamed(context, "/login");
+                onPressed: () async {
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: pass);
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, 'login');
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
                   },
               ),
 

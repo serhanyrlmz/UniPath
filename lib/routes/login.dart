@@ -1,4 +1,5 @@
 import 'package:UniPath/utils/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -17,6 +18,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  late String email,pass;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +74,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                        email = value;
+                        //Do something with the user input.
+                        },
                         obscureText: false,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -95,6 +102,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                        pass = value;
+                        //Do something with the user input.
+                        },
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -111,8 +122,18 @@ class _LoginState extends State<Login> {
                       child: ElevatedButton(
                         child: Text("Login", style: TextStyle(fontSize: 20.0),),
                         //color: Colors.red,
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/HomePage');},
+                        onPressed: () async {
+                          try {
+                            final user = await _auth.signInWithEmailAndPassword(
+                                email: email, password: pass);
+                            if (user != null) {
+                              Navigator.pushNamed(context, '/HomePage');
+
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+                        }
                       ),
                     ),
 
