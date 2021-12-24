@@ -8,7 +8,6 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:UniPath/utils/analytics.dart';
 import 'package:UniPath/utils/auth.dart';
 
-
 class SignUp extends StatefulWidget {
   const SignUp({Key? key, required this.analytics, required this.observer})
       : super(key: key);

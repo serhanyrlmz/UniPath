@@ -58,6 +58,9 @@ class _AnnouncementsState extends State<Announcements> {
     return Scaffold(
       appBar: AppBar(title:Text('Announcements'),
         backgroundColor: AppColors.headingColor,
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.people))
+        ],
       ),
       body: Center(
 

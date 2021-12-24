@@ -57,10 +57,57 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar( title:Text('Home Page'),
         backgroundColor: AppColors.headingColor,
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.people))
+        ],
+
+        ),
+
+
+      body:Column(
+        children: <Widget> [
+          Card(
+            child: Container(
+              height:350.0,
+              color:AppColors.headingColor,
+              child:Column(
+                children: <Widget>[
+                  ListTile(
+                    leading:CircleAvatar(),
+                    title: Text("UniPath First Post")
+                  ),
+                  Expanded(
+                    child:Container(
+                      color:Colors.white,
+                    ),
+                  ),
+                  
+                  SizedBox(height:14.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children:<Widget>[
+                      Row(
+                        children :<Widget>[
+                          Icon(Icons.thumb_up),
+                          Text("Like"),
+                        ],
+                      ),
+                      Row(
+                          children :<Widget>[
+                            Icon(Icons.comment),
+                            Text("Comments"),
+                          ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height:12.0),
+                ]
+              )
+            ),
+          )
+        ],
       ),
-      body:Center(
-        child: Text('Home Page'),
-      ),
+
       bottomNavigationBar: BottomNavigationBar(
         items:const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home),label:'home', backgroundColor: AppColors.loginBackBottom),

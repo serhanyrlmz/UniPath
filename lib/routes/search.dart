@@ -59,6 +59,9 @@ class _SearchScreenState extends State<Search> {
     return Scaffold(
       appBar: AppBar( title:Text('Search'),
         backgroundColor: AppColors.headingColor,
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.search))
+        ],
       ),
       body:Center(
         child: Text('Search'),

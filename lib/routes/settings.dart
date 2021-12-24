@@ -60,6 +60,9 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar( title:Text('Settings'),
         backgroundColor: AppColors.headingColor,
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.people))
+        ],
       ),
       body:Center(
         child: Text('Settings'),

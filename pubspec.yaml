@@ -47,7 +47,8 @@ dependencies:
   flutter_signin_button: ^2.0.0
   dots_indicator: ^2.0.0
   string_validator: ^0.3.0
-
+  http: ^0.13.4
+  firebase_storage: ^10.2.4
 
   image_picker: ^0.8.4+4
 
