@@ -1,3 +1,5 @@
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'HomePage.dart';
@@ -5,7 +7,7 @@ import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'announcements.dart';
-
+import 'package:UniPath/routes/storage_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
@@ -55,12 +57,44 @@ class _AddState extends State<Add> {
   }
   @override
   Widget build(BuildContext context) {
+   final Storage storage= Storage();
     return Scaffold(
+
       appBar: AppBar( title:Text('Add'),
         backgroundColor: AppColors.headingColor,
       ),
-      body:Center(
-        child: Text('Add'),
+      body:Column(
+        children: [
+          Center(
+            child:ElevatedButton(
+                onPressed: () async {
+                  final results=await FilePicker.platform.pickFiles(
+                    allowMultiple:false,
+                    type:FileType.custom,
+                    allowedExtensions: ['png','jpg'],
+                  );
+                  if(results==null){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No files selected')
+                        ),
+                    );
+                    return null;
+                  }
+                  final path= results.files.single.path;
+                  final fileName=results.files.single.name;
+
+                  storage.uploadFile(path,fileName)
+                      .then((value)=>print('Done'));
+
+
+
+                },
+                child:Text('Upload File')
+            )
+          )
+        ],
+
       ),
       bottomNavigationBar: BottomNavigationBar(
         items:const <BottomNavigationBarItem>[
@@ -81,3 +115,4 @@ class _AddState extends State<Add> {
     );
   }
 }
+
