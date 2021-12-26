@@ -118,7 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    child: ListTile(
+                    child:Column(
+                     children: <Widget>
+                      [
+                        ListTile(
                       dense: false,
                       leading: Image.network(image['url']),
 
@@ -127,8 +130,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icon(
                           Icons.delete,
                           color: Colors.red,
+
                         ),
                       ),
+                    ),
+                       SizedBox(height: 14.0,),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                           children:<Widget>[
+                             Row(
+                               children: [
+                                 Icon(Icons.thumb_up),
+                                 Text("Like"),
+                               ],
+                             ),
+                             Row(
+                               children: [
+                                 Icon(Icons.comment),
+                                 Text("Comments"),
+                               ],
+                             )
+                           ],
+                       ),
+                       SizedBox(height: 12.0,),
+                    ],
                     ),
                   );
                 },
