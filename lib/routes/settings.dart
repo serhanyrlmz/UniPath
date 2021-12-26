@@ -45,10 +45,16 @@ class _SettingsState extends State<Settings> {
           return Add();
         }));
       }
-      else if(_selectedIndex ==4){
-        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
-
+      else if(_selectedIndex ==4) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
           return Settings();
+        }));
+      }
+      else if(_selectedIndex ==5) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Profile();
         }));
       }
 
