@@ -9,7 +9,7 @@ import 'add.dart';
 import 'package:UniPath/routes/settings.dart';
 import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:UniPath/routes/storage_service.dart';
-import 'package:UniPath/routes/post.dart';
+import 'package:UniPath/utils/post.dart';
 import 'package:UniPath/utils/database.dart';
 import 'package:UniPath/routes/Profile.dart';
 import 'package:UniPath/utils/user.dart';
