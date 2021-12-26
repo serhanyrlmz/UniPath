@@ -117,23 +117,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   snapshot.data![index];
 
                   return Card(
+
                     margin: EdgeInsets.symmetric(vertical: 10),
                     child:Column(
                      children: <Widget>
                       [
-                        ListTile(
-                      dense: false,
-                      leading: Image.network(image['url']),
+                        Container(
 
-                      trailing: IconButton(
-                        onPressed: () => _delete(image['path']),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
+                      child: Image(image: NetworkImage(image['url']),),
+
 
                         ),
-                      ),
-                    ),
+
                        SizedBox(height: 14.0,),
                        Row(
                          mainAxisAlignment: MainAxisAlignment.spaceAround,
