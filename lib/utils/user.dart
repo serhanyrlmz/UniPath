@@ -9,6 +9,9 @@ class UserModel {
   final String? email;
   final String? displayname;
   final String? photoUrl;
+  final List<dynamic>? followers;
+  final List<dynamic>? following;
+  final List<dynamic>? posts;
 
   UserModel({
     this.id,
@@ -17,6 +20,9 @@ class UserModel {
     this.email,
     this.displayname,
     this.photoUrl,
+    this. followers,
+    this.following,
+    this.posts,
   });
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel(
@@ -26,6 +32,9 @@ class UserModel {
       email: doc['email'],
       displayname: doc['displayName'],
       photoUrl: doc['photoUrl'],
+      followers: doc['followers'],
+      following: doc['following'],
+      posts: doc['posts'],
     );
   }
 }
