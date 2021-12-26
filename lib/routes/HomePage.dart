@@ -1,4 +1,3 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,15 @@ import 'package:image_picker/image_picker.dart';
 import 'search.dart';
 import 'announcements.dart';
 import 'add.dart';
-import 'settings.dart';
+import 'package:UniPath/routes/settings.dart';
 import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:UniPath/routes/storage_service.dart';
-import 'package:UniPath/utils/post.dart';
+import 'package:UniPath/routes/post.dart';
+import 'package:UniPath/utils/database.dart';
+import 'package:UniPath/routes/Profile.dart';
+import 'package:UniPath/utils/user.dart';
+
+UserModel? currentUser;
 
 
 class HomeScreen extends StatefulWidget {
@@ -81,12 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
           return Add();
         }));
       }
-      else if (_selectedIndex == 4) {
+      else if(_selectedIndex ==4) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) {
           return Settings();
         }));
       }
+      else if(_selectedIndex ==5) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Profile();
+        }));
+      }
+
     }
     );
   }
@@ -177,6 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'home',
               backgroundColor: AppColors.loginBackBottom),
           BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),
+              label: 'home',
+              backgroundColor: AppColors.loginBackBottom),
+          BottomNavigationBarItem(icon: Icon(Icons.person),
               label: 'home',
               backgroundColor: AppColors.loginBackBottom),
 
