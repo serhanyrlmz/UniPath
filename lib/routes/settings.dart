@@ -5,7 +5,7 @@ import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'announcements.dart';
-
+import 'Profile.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
@@ -81,6 +81,7 @@ class _SettingsState extends State<Settings> {
           BottomNavigationBarItem(icon: Icon(Icons.announcement),label:'home' ,backgroundColor: AppColors.loginBackBottom),
           BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined),label:'home' ,backgroundColor: AppColors.loginBackBottom),
           BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),label:'home', backgroundColor: AppColors.loginBackBottom),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'home', backgroundColor: AppColors.loginBackBottom),
 
         ],
         type: BottomNavigationBarType.shifting,
