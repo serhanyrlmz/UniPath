@@ -5,7 +5,7 @@ import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'announcements.dart';
-
+import 'Profile.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
@@ -45,10 +45,16 @@ class _SettingsState extends State<Settings> {
           return Add();
         }));
       }
-      else if(_selectedIndex ==4){
-        Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
-
+      else if(_selectedIndex ==4) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
           return Settings();
+        }));
+      }
+      else if(_selectedIndex ==5) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Profile();
         }));
       }
 
@@ -75,6 +81,7 @@ class _SettingsState extends State<Settings> {
           BottomNavigationBarItem(icon: Icon(Icons.announcement),label:'home' ,backgroundColor: AppColors.loginBackBottom),
           BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined),label:'home' ,backgroundColor: AppColors.loginBackBottom),
           BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),label:'home', backgroundColor: AppColors.loginBackBottom),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'home', backgroundColor: AppColors.loginBackBottom),
 
         ],
         type: BottomNavigationBarType.shifting,

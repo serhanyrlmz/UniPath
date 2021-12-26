@@ -17,6 +17,8 @@ class Search extends StatefulWidget {
 
 class _SearchScreenState extends State<Search> {
   int _selectedIndex=0;
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = const Text('Search');
 
   void _onItemTapped(int index){
     setState((){
@@ -57,15 +59,45 @@ class _SearchScreenState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title:Text('Search'),
+      appBar: AppBar(
+        title:customSearchBar,
+        automaticallyImplyLeading:false,
         backgroundColor: AppColors.headingColor,
         actions: <Widget>[
-          IconButton(onPressed: (){}, icon: Icon(Icons.search))
+          IconButton(onPressed: (){
+            setState(() {
+              if (customIcon.icon == Icons.search) {
+                customIcon = const Icon(Icons.cancel);
+                customSearchBar = const ListTile(
+                  leading: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  title: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      border: InputBorder.none,
+                    ),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }
+            });
+          },
+              icon: customIcon)
         ],
       ),
       body:Center(
-        child: Text('Search'),
-      ),
+        child:Text("Search")
+        ),
       bottomNavigationBar: BottomNavigationBar(
         items:const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home),label:'home', backgroundColor: AppColors.loginBackBottom),
