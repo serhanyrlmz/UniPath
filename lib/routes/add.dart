@@ -1,13 +1,21 @@
 
+
+
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
+import 'package:image_picker/image_picker.dart';
 import 'HomePage.dart';
 import 'search.dart';
-import 'add.dart';
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'settings.dart';
 import 'announcements.dart';
 import 'package:UniPath/routes/storage_service.dart';
+import 'package:path/path.dart' as path;
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
@@ -17,6 +25,38 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
+  FirebaseStorage storage = FirebaseStorage.instance;
+  Future<void> _upload(String inputSource) async {
+    final picker = ImagePicker();
+    PickedFile? pickedImage;
+    try {
+      pickedImage = await picker.getImage(
+          source: inputSource == 'camera'
+              ? ImageSource.camera
+              : ImageSource.gallery,
+          maxWidth: 1920);
+
+      final String fileName = path.basename(pickedImage!.path);
+      File imageFile = File(pickedImage.path);
+
+      try {
+        // Uploading the selected image with some custom meta data
+        await storage.ref(fileName).putFile(
+            imageFile,
+            SettableMetadata(customMetadata: {
+              'uploaded_by': 'A bad guy',
+              'description': 'Some description...'
+            }));
+
+        // Refresh the UI
+        setState(() {});
+      } on FirebaseException catch (error) {
+        print(error);
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
   int _selectedIndex=0;
 
   void _onItemTapped(int index){
@@ -63,37 +103,26 @@ class _AddState extends State<Add> {
       appBar: AppBar( title:Text('Add'),
         backgroundColor: AppColors.headingColor,
       ),
-      body:Column(
-        children: [
-          Center(
-            child:ElevatedButton(
-                onPressed: () async {
-                  final results=await FilePicker.platform.pickFiles(
-                    allowMultiple:false,
-                    type:FileType.custom,
-                    allowedExtensions: ['png','jpg'],
-                  );
-                  if(results==null){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('No files selected')
-                        ),
-                    );
-                    return null;
-                  }
-                  final path= results.files.single.path;
-                  final fileName=results.files.single.name;
 
-                  storage.uploadFile(path,fileName)
-                      .then((value)=>print('Done'));
-
-
-
-                },
-                child:Text('Upload File')
-            )
-          )
-        ],
+       body: Padding(
+         padding: const EdgeInsets.all(20),
+         child: Column(
+           children: [
+           Row(
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: [
+             ElevatedButton.icon(
+                 onPressed: () => _upload('camera'),
+                 icon: Icon(Icons.camera),
+                 label: Text('camera')),
+             ElevatedButton.icon(
+                 onPressed: () => _upload('gallery'),
+                 icon: Icon(Icons.library_add),
+                 label: Text('Gallery')),
+           ],
+         ),
+         ],
+       ),
 
       ),
       bottomNavigationBar: BottomNavigationBar(

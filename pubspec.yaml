@@ -42,15 +42,18 @@ dependencies:
   stacked_services: ^0.8.16
   firebase_crashlytics: ^2.4.1
   flutter_bloc: ^8.0.0
+  http: ^0.13.0
 
   email_validator: ^2.0.1
   flutter_signin_button: ^2.0.0
   dots_indicator: ^2.0.0
   string_validator: ^0.3.0
   firebase_storage: ^10.2.4
-
+  path: ^1.8.0
   image_picker: ^0.8.4+4
   file_picker: ^4.3.0
+  firebase_database: ^9.0.4
+
 
 
 
@@ -76,7 +79,9 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/post/
     - assets/post/cat.jpg
+    - assets/post/dog.jpg
 
 
   # The following line ensures that the Material Icons font is

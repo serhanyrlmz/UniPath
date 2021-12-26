@@ -1,12 +1,16 @@
 
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
+import 'package:image_picker/image_picker.dart';
 import 'search.dart';
 import 'announcements.dart';
 import 'add.dart';
 import 'settings.dart';
 import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:UniPath/routes/storage_service.dart';
+import 'package:UniPath/utils/post.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +21,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FirebaseStorage storage = FirebaseStorage.instance;
+
+  // Retriew the uploaded images
+  // This function is called when the app launches for the first time or when an image is uploaded or deleted
+  Future<List<Map<String, dynamic>>> _loadImages() async {
+    List<Map<String, dynamic>> files = [];
+
+    final ListResult result = await storage.ref().list();
+    final List<Reference> allFiles = result.items;
+
+    await Future.forEach<Reference>(allFiles, (file) async {
+      final String fileUrl = await file.getDownloadURL();
+      files.add({
+        "url": fileUrl,
+        "path": file.fullPath,
+
+      });
+    });
+
+    return files;
+  }
+
+  // Delete the selected image
+  // This function is called when a trash icon is pressed
+  Future<void> _delete(String ref) async {
+    await storage.ref(ref).delete();
+    // Rebuild the UI
+    setState(() {});
+  }
+
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -55,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     );
   }
+  @override void initState() { super.initState();  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,36 +104,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ),
 
+      body: Container(
+        child: FutureBuilder(
+          future: _loadImages(),
+          builder: (context,
+              AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                itemCount: snapshot.data?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final Map<String, dynamic> image =
+                  snapshot.data![index];
 
-      body: FutureBuilder(
-        future: storage.listFiles(),
-        builder: (BuildContext context,
-            AsyncSnapshot<firebase_storage.ListResult> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            return Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.items.length,
-                  itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: ListTile(
+                      dense: false,
+                      leading: Image.network(image['url']),
 
+                      trailing: IconButton(
+                        onPressed: () => _delete(image['path']),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
 
-                  },
-
-                )
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              !snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-          return Container();
-        },
+          },
+        ),
       ),
-
 
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
