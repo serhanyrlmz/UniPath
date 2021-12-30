@@ -7,7 +7,7 @@ class UserModel {
   final String? username;
   final String? bio;
   final String? email;
-  final String? displayname;
+  final String? name;
   final String? photoUrl;
   final List<dynamic>? followers;
   final List<dynamic>? following;
@@ -18,7 +18,7 @@ class UserModel {
     this.username,
     this.bio,
     this.email,
-    this.displayname,
+    this.name,
     this.photoUrl,
     this. followers,
     this.following,
@@ -30,7 +30,7 @@ class UserModel {
       bio: doc['bio'],
       username: doc['username'],
       email: doc['email'],
-      displayname: doc['displayName'],
+      name: doc['name'],
       photoUrl: doc['photoUrl'],
       followers: doc['followers'],
       following: doc['following'],

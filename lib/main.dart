@@ -73,7 +73,7 @@ class AppBase extends StatelessWidget {
           '/login': (context) => Login(analytics: analytics, observer: observer),
           '/signup': (context) => SignUp(analytics: analytics, observer: observer),
           '/search' : (context) => Search(),
-          '/settings' : (context) => Settings(),
+          '/settings' : (context) => Setting(),
           '/HomePage' : (context) => HomeScreen(),
 
         },

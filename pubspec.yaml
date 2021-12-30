@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^0.8.4+4
   file_picker: ^4.3.0
   firebase_database: ^9.0.4
+  page_transition: ^2.0.4
 
 
 
@@ -80,7 +81,6 @@ flutter:
   assets:
     - assets/
     - assets/post/
-    - assets/post/cat.jpg
     - assets/post/dog.jpg
 
 

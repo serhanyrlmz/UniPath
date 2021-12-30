@@ -46,7 +46,7 @@ class _AnnouncementsState extends State<Announcements> {
       else if(_selectedIndex ==4){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Settings();
+          return Setting();
         }));
       }
 

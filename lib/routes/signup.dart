@@ -1,4 +1,5 @@
 import 'package:UniPath/utils/styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
@@ -23,6 +24,20 @@ class _SignUpState extends State<SignUp> {
   late String email, username, pass,name;
   final _auth = FirebaseAuth.instance;
 
+  Future<void> userSetup({required String name, required String username,required String email}) async {
+    //firebase auth instance to get uuid of user
+    User? auth = FirebaseAuth.instance.currentUser;
+
+    //now below I am getting an instance of firebaseiestore then getting the user collection
+    //now I am creating the document if not already exist and setting the data.
+    FirebaseFirestore.instance.collection('users').doc(auth!.uid).set(
+        {
+          'email':email,'username':username,'name': name, 'uid': auth.uid
+        });
+
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -34,6 +49,7 @@ class _SignUpState extends State<SignUp> {
       };
       return Colors.black;
     }
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -169,11 +185,14 @@ class _SignUpState extends State<SignUp> {
                 style: ButtonStyle(overlayColor:
                   MaterialStateProperty.resolveWith(getColor),),
                 onPressed: () async {
+
+
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: pass);
                     if (newUser != null) {
-                      Navigator.pushNamed(context, 'login');
+                      userSetup(name:name,username:username,email:email);
+                      Navigator.pushNamed(context, '/login');
                     }
                   } catch (e) {
                     print(e);

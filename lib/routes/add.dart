@@ -1,7 +1,9 @@
 
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
@@ -10,14 +12,10 @@ import 'HomePage.dart';
 import 'search.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'settings.dart';
+import 'package:UniPath/routes/settings.dart';
 import 'announcements.dart';
 import 'package:UniPath/routes/storage_service.dart';
 import 'package:path/path.dart' as path;
-
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 
 class Add extends StatefulWidget {
   @override
@@ -26,6 +24,20 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   FirebaseStorage storage = FirebaseStorage.instance;
+
+  Future<void> postSetup({required String postPostUrl}) async {
+    //firebase auth instance to get uuid of user
+    User? auth = FirebaseAuth.instance.currentUser;
+
+    //now below I am getting an instance of firebaseiestore then getting the user collection
+    //now I am creating the document if not already exist and setting the data.
+    FirebaseFirestore.instance.collection('users').doc(auth!.uid).set(
+        {
+          'posts':postPostUrl,
+        });
+
+    return;
+  }
   Future<void> _upload(String inputSource) async {
     final picker = ImagePicker();
     PickedFile? pickedImage;
@@ -37,16 +49,14 @@ class _AddState extends State<Add> {
           maxWidth: 1920);
 
       final String fileName = path.basename(pickedImage!.path);
-      File imageFile = File(pickedImage.path);
+      File imageFile = File(pickedImage.path) ;
+      postSetup(postPostUrl:storage.ref(fileName).putFile(imageFile) as String);
 
       try {
         // Uploading the selected image with some custom meta data
         await storage.ref(fileName).putFile(
             imageFile,
-            SettableMetadata(customMetadata: {
-              'uploaded_by': 'A bad guy',
-              'description': 'Some description...'
-            }));
+            );
 
         // Refresh the UI
         setState(() {});
@@ -88,7 +98,7 @@ class _AddState extends State<Add> {
       else if(_selectedIndex ==4){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Settings();
+          return Setting();
         }));
       }
 

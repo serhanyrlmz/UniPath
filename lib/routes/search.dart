@@ -49,7 +49,7 @@ class _SearchScreenState extends State<Search> {
       else if(_selectedIndex ==4){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Settings();
+          return Setting();
         }));
       }
 

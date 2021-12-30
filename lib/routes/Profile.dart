@@ -1,272 +1,467 @@
+import 'package:UniPath/models/user.dart';
+import 'package:UniPath/utils/post.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:UniPath/utils/styles.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:UniPath/utils/analytics.dart';
+import 'package:UniPath/utils/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'profile.dart';
 import 'package:UniPath/routes/EditProfile.dart';
 import 'package:UniPath/utils/database.dart';
 import 'package:UniPath/routes/HomePage.dart';
 import 'package:UniPath/utils/user.dart';
+import 'package:UniPath/utils/postCard.dart';
 
 class Profile extends StatefulWidget {
-  final String? profileId;
 
-  Profile({this.profileId});
+
+  late final FirebaseAnalytics analytics;
+  late final FirebaseAnalyticsObserver observer;
+  late final Post post;
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  final String currentUserId = currentUser!.id.toString();
-  bool isLoadingPost = false;
-  int postCount = 0;
-  //List<Post>? posts = [];
+  final controller = PageController(initialPage: 0);
 
-  //post orientation
-  String postOrientation = "grid";
-  @override
-  void initState() {
-    super.initState();
-    //getProfilePost();
-  }
+  Future<void> PostOptions(String pid,String title, String content) async {
+    print(pid);
 
-  /*getProfilePost() async {
-    setState(() {
-      isLoadingPost = true;
-    });
 
-    QuerySnapshot snapshot = await postReference
-        .doc(widget.profileId)
-        .collection("userPost")
-        .orderBy("timestamp", descending: true)
-        .get();
-    setState(() {
-      isLoadingPost = false;
-      postCount = snapshot.docs.length;
-      posts = snapshot.docs.map((e) => Post.fromDocument(e)).toList();
-      print(posts);
-    });
-  }
-  */
-
-//edit profile function
-  editProfile() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditProfile(
-          currentUserId: currentUserId,
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('Cancel'),
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context, 'Cancel');
+          },
         ),
-      ),
-    );
-  }
+        title: const Text(
+          'Post Options',
+          style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        // message: const Text('',
+        // style: TextStyle(color: Colors.black, fontSize: 15)),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            child: const Text('Edit'),
+            onPressed: () async {}
+             // List<String> newPost = await Navigator.of(context).push(
+                //  MaterialPageRoute(
+                  //    builder: (context) => EditPost( caption: title,text: content)));
 
-//build button for profile
-  buildButton({String? text, function}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: GestureDetector(
-        onTap: function,
-        child: Container(
-          padding: EdgeInsets.all(8.0),
-          width: MediaQuery.of(context).copyWith().size.width / 3,
-          decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(5.0)),
-          child: Center(
-            child: Text(
-              text!,
-              //textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18),
+             // if(newPost != null){
+               // await FirebaseFirestore.instance
+                //    .collection('posts')
+                 //   .doc(pid) //find this
+                  //  .update({'title':newPost[0],'content':newPost[1]});
+             // }
+             // Navigator.pop(context);
+           // },
+          ),
+          CupertinoActionSheetAction(
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
             ),
-          ),
-        ),
-      ),
-    );
-  }
+            onPressed: () async {
 
-//to show edit profile button
-  buildProfileButton() {
-    bool isProfileOwner = currentUserId == widget.profileId;
-    if (isProfileOwner) {
-      return buildButton(text: "Edit  Profile", function: editProfile);
-    }
-    return Text("profile button");
-  }
+              await FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc(pid) //find this
+                  .delete();
 
-  //to show post level and count
-  Column buildCountColumn(String lavel, int count) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          count.toString(),
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 22.0),
-        ),
-        Container(
-          child: Text(
-            lavel.toString(),
-            style: TextStyle(
-                fontWeight: FontWeight.w400, fontSize: 17, color: Colors.grey),
-          ),
-        )
-      ],
-    );
-  }
+              Navigator.pop(context);
+              setState(() {
 
-//to show profile header
-  buildProfileHeader() {
-    return FutureBuilder(
-      future: userReference.doc(widget.profileId).get(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        UserModel user = UserModel.fromDocument(snapshot.data);
-        return Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(user.photoUrl.toString()),
-                  ),
-                  Expanded(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              buildCountColumn("post", postCount),
-                              buildCountColumn("followers", 0),
-                              buildCountColumn("following", 1),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [buildProfileButton()],
-                          )
-                        ],
-                      ))
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 15.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  user.username.toString(),
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 8.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  user.displayname.toString(),
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+              });
 
-  /*buildProfilePost() {
-    if (isLoadingPost) {
-      //return circularProgress();
-    } else if (posts!.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(30),
-        child: Container(
-          child: Center(
-            child: Text("no post avilable \n   upload post",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
-          ),
-        ),
-      );
-    } else if (postOrientation == "grid") {
-      List<GridTile>? gridTile = [];
-      posts!.forEach((val) {
-        gridTile.add(
-          GridTile(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-            ),
-          ),
-        );
-      });
-
-      return GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 1.0,
-        mainAxisSpacing: 2,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        children: gridTile,
-      );
-    }
-  }
-  */
-
-  setPostOrientation(String orientation) {
-    setState(() {
-      this.postOrientation = orientation;
-    });
-  }
-
-  buildTooglePostOrientation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        IconButton(
-          onPressed: () => setPostOrientation("grid"),
-          icon: Icon(Icons.grid_on),
-          color: postOrientation == "grid"
-              ? Theme.of(context).primaryColor
-              : Colors.grey,
-        ),
-
-        IconButton(
-          onPressed: () => setPostOrientation("list"),
-          icon: Icon(Icons.list),
-          color: postOrientation == "list"
-              ? Theme.of(context).primaryColor
-              : Colors.grey,
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          buildProfileHeader(),
-          Divider(
-            height: 10.0,
-            color: Colors.grey,
-          ),
-          buildTooglePostOrientation(),
-          Divider(
-            height: 10.0,
-            color: Colors.grey,
-          ),
-          //buildProfilePost(),
+            },
+          )
         ],
       ),
     );
+  }
+
+  List<dynamic> followers = [];
+  List<dynamic> following = [];
+  String username = "",
+      fullname = "",
+      phoneNumber = "",
+      photoUrl = "",
+      description = "",
+      uid = "";
+  List<dynamic> postsUser = [];
+  List<dynamic> posts = [];
+  //var userInff;
+  late user currentUser;
+  String activation = "";
+  void _loadUserInfo() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser!;
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+
+    //.then((QuerySnapshot querySnapshot) {
+    // querySnapshot.docs.forEach((doc) async {
+    //print(doc['username'] + " " + doc['fullname']);
+    //print(doc.data()['username'])
+
+    //});
+    //});
+    setState(() {
+      username = x.docs[0]['username'];
+      fullname = x.docs[0]['fullname'];
+      followers = x.docs[0]['followers'];
+      following = x.docs[0]['following'];
+      phoneNumber = x.docs[0]['phoneNumber'];
+      photoUrl = x.docs[0]['photoUrl'];
+      description = x.docs[0]['description'];
+      postsUser = x.docs[0]['posts'];
+      uid = x.docs[0]['uid'];
+      activation = x.docs[0]['activation'];
+    });
+  }
+  bool feedLoading = true;
+  int postsSize = 0;
+  void _loadUserProf() async {
+    FirebaseAuth _auth;
+    User _user;
+    _auth = FirebaseAuth.instance;
+    _user = _auth.currentUser!;
+
+    var x = await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: _user.uid)
+        .get();
+
+    username = x.docs[0]['username'];
+    fullname = x.docs[0]['fullname'];
+    followers = x.docs[0]['followers'];
+    following = x.docs[0]['following'];
+    phoneNumber = x.docs[0]['phoneNumber'];
+    photoUrl = x.docs[0]['photoUrl'];
+    description = x.docs[0]['description'];
+    uid = x.docs[0]['uid'];
+    activation = x.docs[0]['activation'];
+    var profPosts = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('userid', isEqualTo: uid)
+        .get();
+    postsSize = profPosts.size;
+    profPosts.docs.forEach((doc) =>
+    {
+      posts.add(
+          Post(
+              pid: doc['pid'],
+              username: doc['username'],
+              userid: doc['userid'],
+              userPhotoUrl: doc['userPhotoURL'],
+              postPhotoURL: doc['postPhotoURL'],
+              title: doc['title'],
+              content: doc['content'],
+              date: DateTime.fromMillisecondsSinceEpoch(
+                  doc['date'].seconds * 1000),
+              likes: doc['likes'],
+              comments: doc['comments'],
+              topics: doc['topics'],
+              isLiked: doc['likes'].contains(uid) ? true : false, activation: ''
+          )
+      )
+    });
+
+    posts..sort((a, b) => b.date.compareTo(a.date));
+    setState(() {
+      print("its in");
+      feedLoading = false;
+    });
+  }
+  Future<List<Map<String, dynamic>>> _loadImages() async {
+    List<Map<String, dynamic>> files = [];
+    FirebaseFirestore storage = FirebaseFirestore.instance;
+    final ListResult result = (await storage.collection('posts').get()) as ListResult;
+    final List<Reference> allFiles = result.items;
+
+    await Future.forEach<Reference>(allFiles, (file) async {
+      final String fileUrl = await file.getDownloadURL();
+      files.add({
+        "url": fileUrl,
+        "path": file.fullPath,
+
+      });
+    });
+
+    return files;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+    _loadUserProf();
+  }
+
+  Widget build(BuildContext context) {
+    currentUser = user(
+        username: username,
+        fullname: fullname,
+        followers: followers,
+        following: following,
+        posts: postsUser,
+        description: description,
+        photoUrl: photoUrl,
+
+
+        uid: uid, profType:false,
+
+    );
+    //_loadUserInfo();
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+            toolbarHeight: 48.0,
+            leading: IconButton(
+              color: Colors.grey[300],
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen()));
+              },
+            ),
+
+            title: Text(
+              username,
+              style: TextStyle(
+                fontFamily: 'BrandonText',
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+        ),
+        body: Container(
+          padding: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      TextButton(
+                          child: Text('Followers',
+                            style: TextStyle(
+                              fontFamily: 'BrandonText',
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          onPressed: () {}
+                            //Navigator.push(
+                               // context,
+                                //MaterialPageRoute(
+                                    //builder: (context) =>
+                                        //Followers(currentUser: currentUser)));
+                         // }
+                      ),
+                      Text(
+                        '${followers.length}',
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(photoUrl),
+                    radius: 56.0,
+                  ),
+                  Column(
+                    children: <Widget>[
+                      TextButton(
+                          child: Text('Following',
+                            style: TextStyle(
+                              fontFamily: 'BrandonText',
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textColor,
+                            ),
+                          ),
+                          onPressed: () {}
+                           // Navigator.push(
+                           //     context,
+                           //     MaterialPageRoute(
+                            //        builder: (context) =>
+                            //            Following(currentUser: currentUser)));
+                        //  }
+                      ),
+                      Text(
+                        '${following.length}',
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 3.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        '${fullname}',
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: 3.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        '${description}',
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 3.0),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 40,
+
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        'Posts',
+                        style: TextStyle(
+                          color: AppColors.textColor,
+                          fontFamily: 'BrandonText',
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        '$postsSize',
+                        style: TextStyle(
+                          fontFamily: 'BrandonText',
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 40,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.grey[750],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            side:
+                            BorderSide(width: 2, color: Colors.blueAccent),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 2),
+                            child: Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                fontFamily: 'BrandonText',
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditProfile()));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              Divider(
+                color: Colors.grey[800],
+                height: 20,
+                thickness: 2.0,
+              ),
+
+
+        ]),
+      ),
+    ));
   }
 }

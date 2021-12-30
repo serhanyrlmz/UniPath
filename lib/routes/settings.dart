@@ -10,13 +10,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
 
-class Settings extends StatefulWidget {
+class Setting extends StatefulWidget {
+
 
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingState createState() => _SettingState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingState extends State<Setting> {
   int _selectedIndex=0;
 
   void _onItemTapped(int index){
@@ -48,7 +49,7 @@ class _SettingsState extends State<Settings> {
       else if(_selectedIndex ==4) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) {
-          return Settings();
+          return Setting();
         }));
       }
       else if(_selectedIndex ==5) {

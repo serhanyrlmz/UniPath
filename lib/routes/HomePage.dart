@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -88,13 +89,13 @@ class _HomeScreenState extends State<HomeScreen> {
       else if(_selectedIndex ==4) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) {
-          return Settings();
+          return Setting();
         }));
       }
       else if(_selectedIndex ==5) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) {
-          return Profile();
+          return Profile( );
         }));
       }
 

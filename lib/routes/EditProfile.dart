@@ -34,9 +34,9 @@ class _EditProfileState extends State<EditProfile> {
 
     DocumentSnapshot doc = await userReference.doc(widget.currentUserId).get();
     userModel = UserModel.fromDocument(doc);
-    print(userModel!.username);
-    nameController.text = userModel!.displayname!;
-    bioController.text = userModel!.bio!;
+   // print(userModel!.username);
+    //nameController.text = userModel!.displayname!;
+    //bioController.text = userModel!.bio!;
     setState(() {
       isLoading = false;
     });
@@ -90,7 +90,7 @@ class _EditProfileState extends State<EditProfile> {
         "bio": bioController.text,
       });
       SnackBar snackbar = SnackBar(content: Text("profile updated"));
-      _scaffoldkey.currentState!.showSnackBar(snackbar);
+    //  _scaffoldkey.currentState!.showSnackBar(snackbar);
     }
   }
 
@@ -126,12 +126,7 @@ class _EditProfileState extends State<EditProfile> {
                 children: [
                   Container(
                     padding: EdgeInsets.all(20.0),
-                    child: CircleAvatar(
-                      radius: 50.0,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                      NetworkImage(userModel!.photoUrl.toString()),
-                    ),
+
                   ),
                 ],
               ),
