@@ -43,6 +43,7 @@ dependencies:
   firebase_crashlytics: ^2.4.1
   flutter_bloc: ^8.0.0
   http: ^0.13.0
+  material_floating_search_bar: ^0.3.6
 
   email_validator: ^2.0.1
   flutter_signin_button: ^2.0.0
