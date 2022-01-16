@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'HomePage.dart';
+import 'notificationPage.dart';
 import 'search.dart';
 import 'add.dart';
 import 'settings.dart';
@@ -37,7 +38,7 @@ class _SettingState extends State<Setting> {
       else if(_selectedIndex ==2){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Announcements();
+          return notificationPage();
         }));
       }
       else if(_selectedIndex ==3){

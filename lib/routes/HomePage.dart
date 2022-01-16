@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:image_picker/image_picker.dart';
+import 'notificationPage.dart';
 import 'search.dart';
 import 'announcements.dart';
 import 'add.dart';
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       else if (_selectedIndex == 2) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) {
-          return Announcements();
+          return notificationPage();
         }));
       }
       else if (_selectedIndex == 3) {

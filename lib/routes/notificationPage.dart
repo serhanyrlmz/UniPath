@@ -1,8 +1,13 @@
 import 'package:UniPath/models/notification.dart';
 import 'package:UniPath/models/notificationCart.dart';
+import 'package:UniPath/routes/search.dart';
+import 'package:UniPath/routes/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:UniPath/utils/color.dart';
+
+import 'HomePage.dart';
+import 'add.dart';
 
 class notificationPage extends StatefulWidget {
   const notificationPage({Key? key}) : super(key: key);
@@ -16,33 +21,6 @@ class _notificationPageState extends State<notificationPage> {
   List<dynamic> followers = [];
   List<dynamic> following = [];
   String username = "", photoUrl = "", notifType = "", uid = "";
-
-  //final Notif first({userPhotoURL:'https://i4.hurimg.com/i/hurriyet/75/770x0/5f007af7d3806c129c7039f3.jpg', username:'The_Beatles', notifType:'like', postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg'});
-  /*
-  Notif first = Notif(notifType: 'like',
-      userPhotoURL: 'https://i4.hurimg.com/i/hurriyet/75/770x0/5f007af7d3806c129c7039f3.jpg',
-      username: 'The_Beatles',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');
-  Notif second = Notif(notifType: 'like',
-      userPhotoURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGfFrulUDv_-DCKCK9BGNbt-30ySoaiYiuUw&usqp=CAU',
-      username: 'MeTalliCa',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');
-  Notif third = Notif(notifType: 'comment',
-      userPhotoURL: 'https://i.scdn.co/image/2f123bb26564d8a4cc63bc396a094cc4a74dc782',
-      username: '_scorpions_',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');
-  Notif fourth = Notif(notifType: 'followRequest',
-      userPhotoURL: 'https://upload.wikimedia.org/wikipedia/tr/a/ac/Acdc_Highway_to_Hell.JPG',
-      username: 'ACDC_official',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');
-  Notif fifth = Notif(notifType: 'follow',
-      userPhotoURL: 'https://365psd.com/images/previews/b9d/kiss-band-42327.jpg',
-      username: 'The_Kiss_Band',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');
-  Notif sixth = Notif(notifType: 'like',
-      userPhotoURL: 'https://img.discogs.com/4m4PENK2GrF7NgJxkSEuvPcnAsg=/fit-in/588x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-3284621-1323933038.jpeg.jpg',
-      username: 'W.A.S.P',
-      postPhotoURL:'https://img-s1.onedio.com/id-55257c07af6b6a0336c2d89f/rev-0/raw/s-ffec9def22fc6d078df21304f9764051c267176a.jpg');*/
 
   final List<Notif> notifications = [
   Notif(notifType: 'like',
@@ -182,17 +160,86 @@ class _notificationPageState extends State<notificationPage> {
     _loadUserFeed();
   }*/
 
+  int _selectedIndex=0;
 
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: notifications.length,
-      itemBuilder: (BuildContext context, int index) {
-        return notificationCart(notif:notifications[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (_selectedIndex == 0) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return HomeScreen();
+        }));
+      }
+      else if (_selectedIndex == 1) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Search();
+        }));
+      }
+      else if (_selectedIndex == 2) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return notificationPage();
+        }));
+      }
+      else if (_selectedIndex == 3) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Add();
+        }));
+      }
+      else if (_selectedIndex == 4) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) {
+          return Setting();
+        }));
+      }
+    }
     );
   }
-}
+
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Notifications'),
+          backgroundColor: AppColors.headingColor,
+        ),
+        body: ListView.separated(
+          padding: const EdgeInsets.all(8),
+          itemCount: notifications.length,
+          itemBuilder: (BuildContext context, int index) {
+            return notificationCart(notif: notifications[index]);
+          },
+          separatorBuilder: (BuildContext context,
+              int index) => const Divider(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home),
+                label: 'home',
+                backgroundColor: AppColors.loginBackBottom),
+            BottomNavigationBarItem(icon: Icon(Icons.search_outlined),
+                label: 'home',
+                backgroundColor: AppColors.loginBackBottom),
+            BottomNavigationBarItem(icon: Icon(Icons.announcement),
+                label: 'home',
+                backgroundColor: AppColors.loginBackBottom),
+            BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined),
+                label: 'home',
+                backgroundColor: AppColors.loginBackBottom),
+            BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),
+                label: 'home',
+                backgroundColor: AppColors.loginBackBottom),
+
+          ],
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _selectedIndex,
+          iconSize: 40,
+          onTap: _onItemTapped,
+        ),
+      );
+    }
+  }

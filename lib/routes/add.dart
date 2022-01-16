@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:UniPath/utils/color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'HomePage.dart';
+import 'notificationPage.dart';
 import 'search.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
@@ -86,7 +87,7 @@ class _AddState extends State<Add> {
       else if(_selectedIndex ==2){
         Navigator.pushReplacement(context,MaterialPageRoute(builder:(context){
 
-          return Announcements();
+          return notificationPage();
         }));
       }
       else if(_selectedIndex ==3){
